@@ -1,0 +1,18 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
+
+Base = declarative_base()
+
+def get_engine(use_memory=True):
+    if use_memory:
+        # Create an in-memory SQLite engine
+        return create_engine('sqlite:///:memory:', echo=False)
+    else:
+        return create_engine('sqlite:///concerts.db', echo=False)
+    
+engine = get_engine(use_memory=False)
+SessionLocal = sessionmaker(bind=engine)
+
+def create_db():
+    """Creates the database tables."""
+    Base.metadata.create_all(engine)
